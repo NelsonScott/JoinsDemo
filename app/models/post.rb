@@ -1,5 +1,10 @@
 class Post < ActiveRecord::Base
-  attr_accessible :title, :body, :author_id
+  [ :title,
+    :body,
+    :author_id ].each do |field|
+    attr_accessible field
+    validates field, :presence => true
+  end
 
   belongs_to :author, :class_name => "User"
   has_many :comments, :foreign_key => :post_id
