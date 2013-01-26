@@ -1,3 +1,6 @@
 class Post < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :title, :body, :author_id
+
+  belongs_to :author, :class_name => "User"
+  has_many :comments, :foreign_key => :post_id
 end
