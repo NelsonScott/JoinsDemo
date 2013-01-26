@@ -2,10 +2,11 @@ class Comment < ActiveRecord::Base
   [ :body,
     :author_id,
     :post_id,
-    :parent_comment_id ].each do |field|
-    attr_accessible field
-    validates field, :presence => true
-  end
+    :parent_comment_id ].each { |field| attr_accessible field }
+
+  [ :body,
+    :author_id,
+    :post_id ].each { |field| validates field, :presence => true }
 
   belongs_to :author, :class_name => "User"
   belongs_to :post
