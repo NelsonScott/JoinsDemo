@@ -32,7 +32,10 @@ class User < ActiveRecord::Base
     #  WHERE posts.author_id = #{self.id}
 
     post_comment_counts = {}
-    user.posts.each do |post|
+    posts.each do |post|
+      # this query gets performed once for each post. each db query
+      # has overhead, so this is very wasteful if there are a lot of
+      # `Post`s for the `User`.
       post_comment_counts[post] = post.comments.count
       # SELECT *
       #   FROM comments
@@ -43,9 +46,9 @@ class User < ActiveRecord::Base
   end
 
   def includes_post_comment_counts
-    # `includes` *prefetches the relation*` :comments, so it doen't
-    # need to be queried for later. Includes does not change the type
-    # of the object returned (in this example, `Post`s); it only
+    # `includes` *prefetches the association* `comments`, so it doen't
+    # need to be queried for later. `includes` does not change the
+    # type of the object returned (in this example, `Post`s); it only
     # prefetches extra data.
     posts = user.posts.includes(:comments)
     # Makes two queries:
@@ -55,7 +58,7 @@ class User < ActiveRecord::Base
     # ...and...
     # SELECT *
     #   FROM comments
-    #  WHERE comments.id IN (...comment ids go here...)
+    #  WHERE comments.id IN (...fetched post ids go here...)
 
     post_comment_counts = {}
     posts.each do |post|
