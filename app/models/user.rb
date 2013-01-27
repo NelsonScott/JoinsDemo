@@ -73,24 +73,22 @@ class User < ActiveRecord::Base
     # join, we expect to get "wider" rows (with the columns of both
     # tables). But `joins` does not automatically return a wider row;
     # User.joins(:comments) still just returns a User:
+    #
+    # In this sense, `joins` does the opposite of `includes`:
+    # `includes fetches the entries and the associated entries
+    # both. `User.joins(:comments)` returns no `Comment` data, just
+    # the `User` columns. For this reason, `joins` is used less
+    # commonly than `includes`.
 
     User.joins(:comments)
-    # SELECT users.*
+    # SELECT users.* -- note that only the user fields are selected!
     #   FROM users
     #   JOIN comments
     #     ON comments.author_id = users.id
-    # Note that this doesn't select any comment fields
 
     # `User.joins(:comments)` returns an array of `User` objects; each
     # `User` appars once for each `Comment` they've made. A `User`
     # without a `Comment` will not appear.
-
-    # Because `joins` does not return the associated `comments`, it is
-    # not used for "prefetching" like `includes` is. It is used less
-    # commonly than `includes`. `joins` is used either when (1) you
-    # want to use the (INNER) JOIN to filter `User`s without
-    # `Comment`s, or (2) you want to perform an "aggregation".  See
-    # below.
   end
 
   def joins_post_comment_counts(threshold = 0)
