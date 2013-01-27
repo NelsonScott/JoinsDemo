@@ -12,7 +12,15 @@ class Comment < ActiveRecord::Base
   belongs_to :post
   belongs_to :parent, :class_name => "Comment", :foreign_key => "parent_comment_id"
 
-  def self.reply_to(comment, user, body)
+  def self.reply_to_post(post, user, body)
+    Comment.create!(
+      :body => body,
+      :author_id => user.id,
+      :post_id => post.id,
+      :parent_comment_id => nil)
+  end
+
+  def self.reply_to_comment(comment, user, body)
     Comment.create!(
       :body => body,
       :author_id => user.id,
