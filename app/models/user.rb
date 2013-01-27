@@ -72,10 +72,10 @@ class User < ActiveRecord::Base
     # `joins` can be surprising to SQL users. When we perform a SQL
     # join, we expect to get "wider" rows (with the columns of both
     # tables). But `joins` does not automatically return a wider row;
-    # User.joins(:comments) still just returns a User:
+    # User.joins(:comments) still just returns a User.
     #
     # In this sense, `joins` does the opposite of `includes`:
-    # `includes fetches the entries and the associated entries
+    # `includes` fetches the entries and the associated entries
     # both. `User.joins(:comments)` returns no `Comment` data, just
     # the `User` columns. For this reason, `joins` is used less
     # commonly than `includes`.
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
   def joins_post_comment_counts(threshold = 0)
     # We use `includes` when we need to prefetch an association and
     # use those associated records. If we only want to *aggregate* the
-    # associated records somehow, includes is wasteful, because all
+    # associated records somehow, `includes` is wasteful, because all
     # the associated records are pulled down into the app.
     #
     # For instance, if a `User` has posts with many, many comments, we
@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 
     posts_with_counts = self
       .posts
-      .select("posts.body, COUNT(*) AS comments_count") # more in a sec
+      .select("posts.*, COUNT(*) AS comments_count") # more in a sec
       .joins(:comments) # .joins("LEFT OUTER JOINS comments")
       .group("posts.id") # "comments.post_id" would be equivalent
     # in SQL:
