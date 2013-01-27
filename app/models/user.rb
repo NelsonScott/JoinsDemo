@@ -15,15 +15,15 @@ class User < ActiveRecord::Base
   #   FROM comments
   #  WHERE comments.author_id = #{self.id}
 
-  # A `has_many :through` association. It "traverses" two
-  # associations, first it gets the posts, then it gets the comments
-  # on those posts. note that `posts` is the name of a `User`
-  # association, and `comments` is the name of a `Post`
-  # association.
+  # A `has_many :through` association: it builds new associations out
+  # of existing ones. It "traverses" two associations, first it gets
+  # the posts, then it gets the comments on those posts. Note that
+  # `posts` is the name of a `User` association, and `comments` is the
+  # name of a `Post` association.
   #
   # If the name of this association had been `comments`, Rails would
   # have guessed the second (`source`) association.
-  has_many :post_responses, :through => :posts, :source => :comments
+  has_many :post_feedback, :through => :posts, :source => :comments
 
   def n_plus_one_post_comment_counts
     posts = user.posts
