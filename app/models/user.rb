@@ -89,8 +89,8 @@ class User < ActiveRecord::Base
     # `User.joins(:comments)` returns an array of `User` objects; each
     # `User` appars once for each `Comment` they've made. A `User`
     # without a `Comment` will not appear (`joins` defaults to INNER
-    # JOIN). We could tack on `.uniq` to return a `User` exactly once
-    # if he had made any comment.
+    # JOIN). We could write `User.joins(:comments).uniq` to return a
+    # `User` exactly once if he had made any comment.
   end
 
   def joins_post_comment_counts(threshold = 0)
