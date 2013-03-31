@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
     # `User` exactly once if he had made any comment.
   end
 
-  def joins_post_comment_counts(threshold = 0)
+  def joins_post_comment_counts
     # We use `includes` when we need to prefetch an association and
     # use those associated records. If we only want to *aggregate* the
     # associated records somehow, `includes` is wasteful, because all
