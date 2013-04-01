@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   has_many :post_feedback, :through => :posts, :source => :comments
 
   def n_plus_one_post_comment_counts
-    posts = user.posts
+    posts = self.posts
     # SELECT *
     #   FROM posts
     #  WHERE posts.author_id = #{self.id}
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
     # need to be queried for later. `includes` does not change the
     # type of the object returned (in this example, `Post`s); it only
     # prefetches extra data.
-    posts = user.posts.includes(:comments)
+    posts = self.posts.includes(:comments)
     # Makes two queries:
     # SELECT *
     #   FROM posts
