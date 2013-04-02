@@ -28,6 +28,8 @@ class Comment < ActiveRecord::Base
   #   FROM comments
   #  WHERE comment.id = #{self.parent_comment_id}
 
+  has_many :replies, :class_name => "Comment", :foreign_key => "parent_comment_id"
+
   def self.reply_to_post(post, user, body)
     Comment.create!(
       :body => body,
