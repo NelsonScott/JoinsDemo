@@ -64,8 +64,17 @@ class User < ActiveRecord::Base
     posts.each do |post|
       # doesn't fire a query, since already prefetched the association
       # way better than N+1
-      post_comment_counts[post] = post.comments.count
+      #
+      # NB: if we write `post.comments.count` ActiveRecord will try to
+      # be super-smart and run a `SELECT COUNT(*) FROM comments WHERE
+      # comments.post_id = ?` query. This is because ActiveRecord
+      # understands `#count`. But we already fetched the comments and
+      # don't want to go back to the DB, so we can avoid this behavior
+      # by calling `Array#length`.
+      post_comment_counts[post] = post.comments.length
     end
+
+    post_comment_counts
   end
 
   def self.users_with_comments
