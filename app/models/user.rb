@@ -135,7 +135,7 @@ class User < ActiveRecord::Base
     posts_with_counts = self
       .posts
       .select("posts.*, COUNT(*) AS comments_count") # more in a sec
-      .joins(:comments) # .joins("LEFT OUTER JOINS comments")
+      .joins(:comments)
       .group("posts.id") # "comments.post_id" would be equivalent
     # in SQL:
     #   SELECT posts.*, COUNT(*) AS comments_count
@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
     #       ON comments.post_id = posts.id
     #    WHERE posts.author_id = #{self.id}
     # GROUP BY posts.id
-
+    #
     # As we've seen before using `joins` does not change the type of
     # object returned: this returns an `Array` of `Post` objects.
     #
