@@ -100,17 +100,20 @@ class User < ActiveRecord::Base
     # the `User` columns. For this reason, `joins` is used less
     # commonly than `includes`.
 
-    User.joins(:comments)
-    # SELECT users.* -- note that only the user fields are selected!
+    User.joins(:comments).uniq
+    # SELECT DISTINCT users.*
     #   FROM users
     #   JOIN comments
     #     ON comments.author_id = users.id
-
+    #
+    # Note that only the user fields are selected!
+    #
     # `User.joins(:comments)` returns an array of `User` objects; each
     # `User` appars once for each `Comment` they've made. A `User`
-    # without a `Comment` will not appear (`joins` defaults to INNER
-    # JOIN). We could write `User.joins(:comments).uniq` to return a
-    # `User` exactly once if he had made any comment.
+    # without a `Comment` will not appear (`joins` uses an INNER
+    # JOIN). If a user makes multiple comments, they appear multiple
+    # times in the result. For this reason, we slap on a `uniq` to
+    # only return a `User` at most once.
   end
 
   def joins_post_comment_counts
