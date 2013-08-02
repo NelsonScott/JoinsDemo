@@ -29,17 +29,21 @@ class User < ActiveRecord::Base
     posts = self.posts
     # SELECT *
     #   FROM posts
-    #  WHERE posts.author_id = #{self.id}
+    #  WHERE posts.author_id = ?
+    #
+    # where `?` gets replaced with `user.id`
 
     post_comment_counts = {}
     posts.each do |post|
-      # this query gets performed once for each post. each db query
+      # This query gets performed once for each post. Each db query
       # has overhead, so this is very wasteful if there are a lot of
       # `Post`s for the `User`.
-      post_comment_counts[post] = post.comments.count
+      post_comment_counts[post] = post.comments.length
       # SELECT *
       #   FROM comments
-      #  WHERE comments.post_id = #{post.id}
+      #  WHERE comments.post_id = ?
+      #
+      # where `?` gets replaced with `post.id`
     end
 
     post_comment_counts
@@ -54,11 +58,18 @@ class User < ActiveRecord::Base
     # Makes two queries:
     # SELECT *
     #   FROM posts
-    #  WHERE post.id = #{self.id}
+    #  WHERE post.id = ?
+    #
+    # where `?` is replaced with `user.id`.
+    #
     # ...and...
+    #
     # SELECT *
     #   FROM comments
-    #  WHERE comments.id IN (...fetched post ids go here...)
+    #  WHERE comments.id IN ?
+    #
+    # where `?` is replaced with `self.posts.map(&:id)`, the `Array`
+    # of `Post` ids.
 
     post_comment_counts = {}
     posts.each do |post|
