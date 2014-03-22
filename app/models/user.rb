@@ -1,10 +1,6 @@
 class User < ActiveRecord::Base
-  [ :user_name,
-    :first_name,
-    :last_name ].each do |field|
-    attr_accessible field
-    validates field, :presence => true
-  end
+
+  validates :user_name, :first_name, :last_name, :presence => true
 
   has_many :posts, :foreign_key => :author_id
   # SELECT *

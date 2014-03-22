@@ -1,12 +1,6 @@
 class Comment < ActiveRecord::Base
-  [ :body,
-    :author_id,
-    :post_id,
-    :parent_comment_id ].each { |field| attr_accessible field }
 
-  [ :body,
-    :author_id,
-    :post_id ].each { |field| validates field, :presence => true }
+  validates :body, :author_id, :post_id, :presence => true
 
   # Rails would look for an `authors` table if we didn't tell it that
   # `author_id` refers to a `User`.
