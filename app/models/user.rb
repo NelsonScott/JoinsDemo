@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def includes_post_comment_counts
-    # `includes` *prefetches the association* `comments`, so it doen't
+    # `includes` *prefetches the association* `comments`, so it doesn't
     # need to be queried for later. `includes` does not change the
     # type of the object returned (in this example, `Post`s); it only
     # prefetches extra data.
