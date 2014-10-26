@@ -1,4 +1,4 @@
-# JoinsDemo
+# w3d4: JoinsDemo
 
 This app introduces you to all the major concepts of associations,
 validations, includes, and joins.
